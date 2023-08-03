@@ -6,11 +6,13 @@ import * as React from "react";
 import { FC } from "react";
 import { Button } from "@/components/ui/Button";
 import { Icons } from "./Icons";
+import { useToast } from "@/hooks/use-toast";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const {toast} = useToast();
 
   const loginWithGoogle = async () => {
     setIsLoading(true);
@@ -20,6 +22,11 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
     } 
     catch (error) {
         //toast notification
+        toast({
+          title: 'There was a problem',
+          description: 'There was an error logging in with Google',
+          variant: 'destructive'
+        })
     } 
     finally {
       setIsLoading(false);
