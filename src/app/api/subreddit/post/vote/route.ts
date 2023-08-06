@@ -133,7 +133,6 @@ export async function PATCH(request: NextRequest) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.message }, { status: 422 });
     }
-    console.log(error);
     return NextResponse.json(
       { error: "Could not register your vote due to an unexpected error." },
       { status: 500 }

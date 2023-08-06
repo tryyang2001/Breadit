@@ -16,7 +16,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const comment = await db.comment.create({
+    await db.comment.create({
       data: {
         text,
         postId,
@@ -30,7 +30,6 @@ export async function PATCH(request: NextRequest) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.message }, { status: 422 });
     }
-    console.log(error);
     return NextResponse.json(
       { error: "Could not post the comment due to an unexpected error." },
       { status: 500 }

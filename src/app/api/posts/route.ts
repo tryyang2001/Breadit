@@ -76,7 +76,6 @@ export async function GET(request: NextRequest) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.message }, { status: 422 });
     }
-    console.log(error);
     return NextResponse.json(
       { error: "Could not fetch more posts due to an unexpected error." },
       { status: 500 }

@@ -22,6 +22,8 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
 }) => {
   const router = useRouter();
 
+  const { loginToast } = useCustomToast();
+
   const { mutate: subscribe, isLoading: isSubLoading } = useMutation({
     mutationFn: async () => {
       const payload: SubscribeToSubredditPayload = {
@@ -34,7 +36,6 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
     onError: (err) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
-          const { loginToast } = useCustomToast();
           return loginToast();
         }
       }
@@ -68,7 +69,6 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
     onError: (err) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
-          const { loginToast } = useCustomToast();
           return loginToast();
         }
       }

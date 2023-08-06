@@ -1,4 +1,4 @@
-import { CommentVoteValidator, PostVoteValidator } from "@/lib/validators/vote";
+import { CommentVoteValidator } from "@/lib/validators/vote";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { z } from "zod";
@@ -68,7 +68,6 @@ export async function PATCH(request: NextRequest) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.message }, { status: 422 });
     }
-    console.log(error);
     return NextResponse.json(
       { error: "Could not register your vote due to an unexpected error." },
       { status: 500 }

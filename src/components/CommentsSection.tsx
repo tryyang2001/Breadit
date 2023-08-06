@@ -1,6 +1,5 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { FC } from "react";
 import PostComment from "./PostComment";
 import CreateComment from "./CreateComment";
 
@@ -68,7 +67,7 @@ const CommentsSection = async ({ postId }: CommentsSectionProps) => {
 
                 {/* render replies */}
                 {topLevelComment.replies
-                  .sort((a, b) => a.votes.length - a.votes.length)
+                  .sort((a, b) => b.votes.length - a.votes.length)
                   .map((reply) => {
                     const replyVotesAmount = reply.votes.reduce((acc, vote) => {
                       if (vote.type === "UP") {

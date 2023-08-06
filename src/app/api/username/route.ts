@@ -1,10 +1,10 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { PostValidator } from "@/lib/validators/post";
+import { UsernameValidator } from "@/lib/validators/username";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-export async function POST(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   try {
     const session = await getAuthSession();
 
@@ -14,38 +14,37 @@ export async function POST(request: NextRequest) {
 
     const requestBody = await request.json();
 
-    const { subredditId, title, content } = PostValidator.parse(requestBody);
+    const { name } = UsernameValidator.parse(requestBody);
 
-    const subscriptionExists = await db.subscription.findFirst({
+    const username = await db.user.findFirst({
       where: {
-        subredditId,
-        userId: session.user.id,
+        username: name,
       },
     });
 
-    if (!subscriptionExists) {
+    if (username) {
       return NextResponse.json(
-        { error: "Subscribe to post" },
-        { status: 400 }
+        { error: "Username has already been taken." },
+        { status: 409 }
       );
     }
 
-    await db.post.create({
+    await db.user.update({
+      where: {
+        id: session.user.id,
+      },
       data: {
-        title,
-        content,
-        authorId: session.user.id,
-        subredditId
+        username: name,
       },
     });
 
-    return new Response('OK');
+    return new Response("OK");
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.message }, { status: 422 });
     }
     return NextResponse.json(
-      { error: "Could not post to subreddit due to an unexpected error." },
+      { error: "Could not update username due to an unexpected error." },
       { status: 500 }
     );
   }

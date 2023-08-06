@@ -46,7 +46,6 @@ export async function POST(request: NextRequest) {
         if (error instanceof z.ZodError) {
           return NextResponse.json({ error: error.message }, { status: 422 });
         }
-        console.log(error);
         return NextResponse.json(
           { error: "Could not subscribe due to an unexpected error." },
           { status: 500 }
